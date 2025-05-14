@@ -8,7 +8,7 @@ public class MemoryManager {
         }
     }
 
-    public void allocate(int pid, int size) {
+    public boolean allocate(int pid, int size) {
         // Best-fit allocation logic
         int bestStart = -1;
         int bestSize = Integer.MAX_VALUE;
@@ -34,11 +34,11 @@ public class MemoryManager {
 
         if (bestStart != -1) {
             for (int k = 0; k < size; k++) {
-            memory[bestStart + k] = pid;
+                memory[bestStart + k] = pid;
             }
-            System.out.println("Allocated " + size + " units of memory to process " + pid + " using best-fit.");
+            return true;
         } else {
-            System.out.println("Memory allocation failed for process " + pid);
+            return false;
         }
     }
 

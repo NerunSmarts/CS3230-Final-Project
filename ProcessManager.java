@@ -11,7 +11,13 @@ public class ProcessManager {
         PCB newProcess = new PCB(pid, name, memorySize, runtime);
         processList.add(newProcess);
         // Allocate memory for the process
-        memoryManager.allocate(pid, memorySize);
+        if (memoryManager.allocate(pid, memorySize)) {
+            newProcess.setState("READY");
+            System.out.println("Process " + name + " created with PID " + pid + " and allocated " + memorySize + " units of memory.");
+        } else {
+            newProcess.setState("BLOCKED");
+            System.out.println("Failed to allocate memory for process " + name);
+        }
     }
 
     public void schedule(int timeQuantum){
@@ -63,6 +69,10 @@ public class ProcessManager {
 
     public void manualAlloc(int pid, int size) {
         // Implement manual memory allocation logic here
-        memoryManager.allocate(pid, size);
+        if (memoryManager.allocate(pid, size)) {
+            System.out.println("Allocated " + size + " units of memory to process " + pid);
+        } else {
+            System.out.println("Failed to allocate memory for process " + pid);
+        }
     }
 }
