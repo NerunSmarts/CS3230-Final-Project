@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class ProcessManager {
 
-    private ArrayList<PCB> processList;
-    private MemoryManager memoryManager;
+    private ArrayList<PCB> processList = new ArrayList<>();
+    private ArrayList<PCB> killList = new ArrayList<>();
+    private MemoryManager memoryManager = new MemoryManager();
 
     public void createProcess(String name, int memorySize, int runtime) {
         int pid = processList.size() + 1; // Simple PID assignment
@@ -29,17 +30,28 @@ public class ProcessManager {
                     process.setRuntime(process.getRuntime() - timeQuantum);
                     //check if process is finished
                     if (process.getRuntime() <= 0) {
-                        processList.remove(process);
+                        killList.add(process);
                     }
                 }
             }
+            for (PCB process : killList) {
+                // Free memory for the finished process
+                memoryManager.free(process.getPid());
+                processList.remove(process);
+                System.out.println("Process " + process.getName() + " has finished.");
+            }
+            killList.clear();
         }
     }
 
     public void listProcesses() {
         // Implement process listing logic here
-        for (PCB process : processList) {
-            System.out.println("Process ID: " + process.getPid() + ", Name: " + process.getName() + ", State: " + process.getState());
+        if (!processList.isEmpty()) {
+            for (PCB process : processList) {
+                System.out.println("Process ID: " + process.getPid() + ", Name: " + process.getName() + ", State: " + process.getState());
+            }
+        } else {
+            System.out.println("No processes running.");
         }
     }
 

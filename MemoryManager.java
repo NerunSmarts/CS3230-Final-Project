@@ -66,7 +66,7 @@ public class MemoryManager {
     public void printMemory() {
         // Print memory status
         int col = 0;
-        System.out.print("Memory contents: ");
+        System.out.print("Memory contents: \n");
         for (int i = 0; i < memory.length; i++) {
             if (col == 10) {
                 System.out.println();
