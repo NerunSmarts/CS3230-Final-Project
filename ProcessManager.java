@@ -13,7 +13,7 @@ public class ProcessManager {
         memoryManager.allocate(pid, memorySize);
     }
 
-    public void schedule(){
+    public void schedule(int timeQuantum){
         // Implement round robin scheduling logic here
         while (!processList.isEmpty()) {
             for (PCB process : processList) {
@@ -23,14 +23,10 @@ public class ProcessManager {
                     // Change state to RUNNING
                     process.setState("RUNNING");
                     // Simulate time slice
-                    try {
-                        Thread.sleep(1000); // Simulate time slice, guessing this is what she wants?
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    process.run(timeQuantum);
                     // Change state back to READY
                     process.setState("READY");
-                    process.setRuntime(process.getRuntime() - 1);
+                    process.setRuntime(process.getRuntime() - timeQuantum);
                     //check if process is finished
                     if (process.getRuntime() <= 0) {
                         processList.remove(process);
@@ -45,5 +41,16 @@ public class ProcessManager {
         for (PCB process : processList) {
             System.out.println("Process ID: " + process.getPid() + ", Name: " + process.getName() + ", State: " + process.getState());
         }
+    }
+
+    public void printMemoryStatus() {
+        // Implement memory status printing logic here
+        System.out.println("Memory status: " + (100 - memoryManager.memFree()) + "% used " + "(" + memoryManager.memFree() + " units free)\n");
+        memoryManager.printMemory();
+    }
+
+    public void manualAlloc(int pid, int size) {
+        // Implement manual memory allocation logic here
+        memoryManager.allocate(pid, size);
     }
 }

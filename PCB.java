@@ -1,4 +1,4 @@
-public class PCB {
+public class PCB implements Runnable {
     private int pid;
     private String name;
     private String state;
@@ -41,5 +41,19 @@ public class PCB {
     }
     public int getMemorySize() {
         return memorySize;
+    }
+
+    public void run(int time) {
+        // TODO: Implement process execution logic here
+        System.out.println("Process " + name + " with PID " + pid + " is running.");
+        try {
+            Thread.sleep(time * 1000); // Simulate runtime in seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void run() {
+        //never used
     }
 }
