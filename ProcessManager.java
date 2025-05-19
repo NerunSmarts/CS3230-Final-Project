@@ -2,14 +2,14 @@ import java.util.ArrayList;
 
 public class ProcessManager {
 
-    private ArrayList<PCB> processList = new ArrayList<>();
-    private ArrayList<PCB> killList = new ArrayList<>();
-    private MemoryManager memoryManager = new MemoryManager();
+    private final ArrayList<PCB> processList = new ArrayList<>();
+    private final ArrayList<PCB> killList = new ArrayList<>();
+    private final MemoryManager memoryManager = new MemoryManager();
     private final Semaphore memoryLock = new Semaphore(1);
 
     public void createProcess(String name, int memorySize, int runtime) {
         int pid = processList.size() + 1;
-        PCB newProcess = new PCB(pid, name, memorySize, runtime);
+        PCB newProcess = new PCB(pid, name, memorySize, runtime, memoryLock);
         processList.add(newProcess);
 
         memoryLock.waitSem();
@@ -46,7 +46,6 @@ public class ProcessManager {
                             }
                         }
                     });
-
                     threads.add(t);
                     t.start();
                 }

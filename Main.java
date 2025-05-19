@@ -40,26 +40,22 @@ public class Main {
                 }
                 case "alloc" -> {
                     switch (command.length) {
-                        case 3: {
+                        case 3 ->  {
                             int pid = Integer.parseInt(command[1]);
                             int size = Integer.parseInt(command[2]);
                             processManager.manualAlloc(pid, size);
-                            break;
                         }
-                        case 4: {
+                        case 4 ->  {
                             int pid = Integer.parseInt(command[1]);
                             int size = Integer.parseInt(command[2]);
                             int start = Integer.parseInt(command[3]);
                             processManager.manualAlloc(pid, size, start);
-                            break;
                         }
-                        default:
-                            System.out.println("Usage: alloc <pid> <size> [<start>]");
-                            break;
+                        default -> System.out.println("Usage: alloc <pid> <size> [<start>]");
                     }
                 }
                 case "ps" -> processManager.listProcesses();
-                case "exit" -> running = false;
+                case "exit" -> {running = false; System.out.println("Exiting MicroOS..."); in.close();}
                 default -> System.out.println("Unknown command: " + command[0]);
             }
         }

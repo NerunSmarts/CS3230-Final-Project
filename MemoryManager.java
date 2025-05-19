@@ -1,5 +1,5 @@
 public class MemoryManager {
-    private int[] memory = new int[100];
+    private final int[] memory = new int[100];
 
     public MemoryManager() {
         for (int i = 0; i < memory.length; i++) {

@@ -1,18 +1,20 @@
 public class PCB implements Runnable {
-    private int pid;
-    private String name;
+    private final int pid;
+    private final String name;
     private String state;
     private boolean active;
     private int runtime;
-    private int memorySize;
+    private final int memorySize;
+    private final Semaphore memoryLock;
 
-    public PCB(int pid, String name, int memorySize, int runtime) {
+    public PCB(int pid, String name, int memorySize, int runtime, Semaphore memoryLock) {
         this.pid = pid;
         this.name = name;
         this.state = "READY";
         this.active = true;
         this.runtime = runtime; // Default runtime
         this.memorySize = memorySize; // Default memory size
+        this.memoryLock = memoryLock;
     }
 
     public int getPid() {
@@ -43,16 +45,20 @@ public class PCB implements Runnable {
         return memorySize;
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void run(int time) {
         // TODO: Implement process execution logic here
+        memoryLock.waitSem();
         System.out.println("Process " + name + " with PID " + pid + " is running.");
         try {
             Thread.sleep(time * 1000); // Simulate runtime in seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        memoryLock.signal();
     }
 
+    @Override
     public void run() {
         //never used
     }
