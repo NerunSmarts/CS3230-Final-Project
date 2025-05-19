@@ -39,12 +39,23 @@ public class Main {
                     }
                 }
                 case "alloc" -> {
-                    if (command.length == 3) {
-                        int pid = Integer.parseInt(command[1]);
-                        int size = Integer.parseInt(command[2]);
-                        processManager.manualAlloc(pid, size);
-                    } else {
-                        System.out.println("Usage: alloc <pid> <size>");
+                    switch (command.length) {
+                        case 3: {
+                            int pid = Integer.parseInt(command[1]);
+                            int size = Integer.parseInt(command[2]);
+                            processManager.manualAlloc(pid, size);
+                            break;
+                        }
+                        case 4: {
+                            int pid = Integer.parseInt(command[1]);
+                            int size = Integer.parseInt(command[2]);
+                            int start = Integer.parseInt(command[3]);
+                            processManager.manualAlloc(pid, size, start);
+                            break;
+                        }
+                        default:
+                            System.out.println("Usage: alloc <pid> <size> [<start>]");
+                            break;
                     }
                 }
                 case "ps" -> processManager.listProcesses();

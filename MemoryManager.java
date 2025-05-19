@@ -2,7 +2,6 @@ public class MemoryManager {
     private int[] memory = new int[100];
 
     public MemoryManager() {
-        // Initialize memory with zeros
         for (int i = 0; i < memory.length; i++) {
             memory[i] = 0;
         }
@@ -40,6 +39,17 @@ public class MemoryManager {
         } else {
             return false;
         }
+    }
+
+     public boolean allocate(int pid, int size, int start) {
+        // Manual allocation logic\
+        if (start < 0 || start + size > memory.length) {
+            return false;
+        }
+        for (int i = start; i < start + size; i++) {
+            memory[i] = pid;
+        }
+        return true;
     }
 
     public void free(int pid) {
